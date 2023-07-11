@@ -80,7 +80,7 @@ public class Funciones {
 
     //extrae los caracteres
     public String CatchChar(String line){
-        String[] lineWOcadena = line.split("(\')[,.¿?¡!;:A-Za-z0-9\\s]?(\')");
+        String[] lineWOcadena = line.split("(')[,.¿?¡!;:A-Za-z0-9\\s]?(')");
         if(lineWOcadena.length>1){
             line=lineWOcadena[0]+"carac"+lineWOcadena[1];
             return line;
