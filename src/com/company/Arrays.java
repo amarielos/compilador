@@ -3,7 +3,6 @@ package com.company;
 import java.util.ArrayList;
 
 public class Arrays {
-
     public ArrayList<String> getTableTipoDato(){
         ArrayList<String> tdArray = new ArrayList();
         tdArray.add("int");
@@ -11,20 +10,14 @@ public class Arrays {
         tdArray.add("String");
         tdArray.add("char");
         tdArray.add("float");
-
         return tdArray;
     }
+    public ArrayList<String> getTableRW(){
+        ArrayList<String> rwArray = new ArrayList();
+        rwArray.add("if");
 
-    public ArrayList<String> getTableRS(){
-        ArrayList<String> rsArray = new ArrayList();
-        rsArray.add("if");
-
-        return rsArray;
+        return rwArray;
     }
-
-
-
-
     public ArrayList<String> getTableSimb(){
         ArrayList<String> simbArray =new ArrayList();
         simbArray.add("+ suma");
@@ -37,11 +30,8 @@ public class Arrays {
         simbArray.add("( parAbierto");
         simbArray.add(") parCerrado");
         simbArray.add("| or");
-
         return simbArray;
     }
-
-
     public ArrayList<String> getTableRules(){
         ArrayList<String> rulesArray = new ArrayList();
         rulesArray.add("");
@@ -84,10 +74,8 @@ public class Arrays {
         rulesArray.add("TipoDato ID asig parAbierto ID multi ID parCerrado fin ");
     //String cadena = "Hola Mundo";
         rulesArray.add("TipoDato ID asig cad fin ");
-    //char caracter = "H";
+    //char caracter = 'H';
         rulesArray.add("TipoDato ID asig carac fin ");
-
-
 
 //TERCER PARCIAL----------------------------------------------------------------------------------------------
     // int x,y;
@@ -97,12 +85,10 @@ public class Arrays {
     // int x,y=5;
         rulesArray.add("TipoDato ID sep ID asig num fin ");
     //if(id==id)
-        rulesArray.add("RS parAbierto ID asig asig ID parCerrado ");
+        rulesArray.add("RW parAbierto ID asig asig ID parCerrado ");
     //if(id==id) | if(id==num)
-        rulesArray.add("RS parAbierto ID asig asig ID parCerrado or RS parAbierto ID asig asig ID parCerrado ");
+        rulesArray.add("RW parAbierto ID asig asig ID parCerrado or RW parAbierto ID asig asig ID parCerrado ");
 
         return rulesArray;
     }
-
 }
-

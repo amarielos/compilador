@@ -1,19 +1,16 @@
 package com.company;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Funciones {
-
-
-    // METODO, RECIBE COMO PARÁMETRO UNA PALABRA Y VERIFICA SI ES RS
-    public String buscarRS(String word){
+    // METODO, RECIBE COMO PARÁMETRO UNA PALABRA Y VERIFICA SI ES RW
+    public String buscarRW(String word){
         Arrays table = new Arrays();
-        ArrayList<String> tableArray = table.getTableRS();
+        ArrayList<String> tableArray = table.getTableRW();
         for (String s : tableArray) {
             if (Objects.equals(word, s)) {
-                return "RS ";
+                return "RW ";
             }
         }return null;
     }
@@ -49,7 +46,6 @@ public class Funciones {
     public String esSimb(String word){
         Arrays table = new Arrays();
         ArrayList<String> simbArray = table.getTableSimb();
-
         for (String s : simbArray) {
             String[] SimbDesc = s.split(" ");
             if (word.equals(SimbDesc[0])){
@@ -69,17 +65,14 @@ public class Funciones {
             String part = CodewoComment[i];
             complete+=part;
         }
-
         return complete;
     }
 
     //extrae cadenas
     public String CatchString(String line){
-
         String[] lineWOcadena = line.split("(\")[,.¿?¡!;:A-Za-z0-9\\s]*(\")");
         if(lineWOcadena.length>1){
             line=lineWOcadena[0]+"cad"+lineWOcadena[1];
-
             return line;
         }
         return null;
@@ -87,11 +80,9 @@ public class Funciones {
 
     //extrae los caracteres
     public String CatchChar(String line){
-
         String[] lineWOcadena = line.split("(\')[,.¿?¡!;:A-Za-z0-9\\s]?(\')");
         if(lineWOcadena.length>1){
             line=lineWOcadena[0]+"carac"+lineWOcadena[1];
-
             return line;
         }
         return null;
@@ -115,14 +106,13 @@ public class Funciones {
                 line = this.CatchChar(line);
             }
 
-
             String[] lineArray = line.split(String.format(WITH_DELIMITER, "[| (),\s;=+*/-]"));
             for (String s : lineArray) {
                 if (this.buscarTD(s) != null) {
                     lineaSin+=this.buscarTD(s);
                     //this.getAnalisisLex(this.buscarTD(s));
-                }else if (this.buscarRS(s) != null) {
-                    lineaSin+=this.buscarRS(s);
+                }else if (this.buscarRW(s) != null) {
+                    lineaSin+=this.buscarRW(s);
                     //this.getAnalisisLex(this.buscarTD(s));
                 }else if (s.equals("cad")){
                     lineaSin+="cad ";
@@ -138,14 +128,11 @@ public class Funciones {
                     lineaSin+=this.esSimb(s);
                     //this.getAnalisisLex(this.esSimb(s));
                 }
-
             }
             //System.out.println(lineaSin);
             this.getAnalisisSin(lineaSin, i+1);
         }
-
     }
-
 
     public void getAnalisisSin(String line, int nLine){
         Arrays table= new Arrays();
