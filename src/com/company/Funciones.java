@@ -149,9 +149,6 @@ public class Funciones {
         }
     }
 
-
-    /*
-
     //metodo con el arraylist del analisis lexico, cambiar atributo para retornar el arraylist
     public void getAnalisisLex(String lexTok){
         ArrayList<String> analisis = new ArrayList();
@@ -163,6 +160,6 @@ public class Funciones {
         for(String s : analisis){
             System.out.print(s+" ");
         }
-    }*/
+    }
 
 }
