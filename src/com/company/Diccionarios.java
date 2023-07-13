@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 
-public class Arrays {
+public class Diccionarios {
     public ArrayList<String> getTableTipoDato(){
         ArrayList<String> tdArray = new ArrayList();
         tdArray.add("int");

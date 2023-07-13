@@ -4,56 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Funciones {
-    // METODO, RECIBE COMO PARÁMETRO UNA PALABRA Y VERIFICA SI ES RW
-    public String buscarRW(String word){
-        Arrays table = new Arrays();
-        ArrayList<String> tableArray = table.getTableRW();
-        for (String s : tableArray) {
-            if (Objects.equals(word, s)) {
-                return "RW ";
-            }
-        }return null;
-    }
-
-    // METODO, RECIBE COMO PARÁMETRO UNA PALABRA Y VERIFICA SI ES TD
-    public String buscarTD(String word){
-        Arrays table = new Arrays();
-        ArrayList<String> tableArray = table.getTableTipoDato();
-        for (String s : tableArray) {
-            if (Objects.equals(word, s)) {
-                return "TipoDato ";
-            }
-        }return null;
-    }
-
-    // METODO, RECIBE COMO PARÁMETRO UNA PALABRA Y VERIFICA SI ES UN ID VÁLIDO
-    public String esID(String word){
-        if (word.matches("^([a-zA-Z_$][a-zA-Z\\d_$]*)$")){
-            return "ID ";
-        }
-        return null;
-    }
-
-    // METODO, RECIBE COMO PARÁMETRO UNA PALABRA Y VERIFICA SI ES UN NUMERO (int o decimal)
-    public String esNum(String word){
-        if (word.matches("^-?[0-9]+([.][0-9]+)?$")){
-            return "num ";
-        }
-        return null;
-    }
-
-    //METODO, RECIBE PALABRA Y REGRESA SI ES UN SIMBOLO (1 CARACTER)
-    public String esSimb(String word){
-        Arrays table = new Arrays();
-        ArrayList<String> simbArray = table.getTableSimb();
-        for (String s : simbArray) {
-            String[] SimbDesc = s.split(" ");
-            if (word.equals(SimbDesc[0])){
-                return  SimbDesc[1]+" ";
-            }
-        }
-        return null;
-    }
+    Checks check = new Checks();
 
     //ayuda al split a mantener los delimitadores
     static public final String WITH_DELIMITER = "((?<=%1$s)|(?=%1$s))";
@@ -108,34 +59,35 @@ public class Funciones {
 
             String[] lineArray = line.split(String.format(WITH_DELIMITER, "[| (),\s;=+*/-]"));
             for (String s : lineArray) {
-                if (this.buscarTD(s) != null) {
-                    lineaSin+=this.buscarTD(s);
+                if (check.esTD(s) != null) {
+                    lineaSin+=check.esTD(s);
                     //this.getAnalisisLex(this.buscarTD(s));
-                }else if (this.buscarRW(s) != null) {
-                    lineaSin+=this.buscarRW(s);
+                }else if (check.esRW(s) != null) {
+                    lineaSin+=check.esRW(s);
                     //this.getAnalisisLex(this.buscarTD(s));
                 }else if (s.equals("cad")){
                     lineaSin+="cad ";
                 }else if (s.equals("carac")){
                     lineaSin+="carac ";
-                } else if (this.esID(s) != null) {
-                    lineaSin+=this.esID(s);
+                } else if (check.esID(s) != null) {
+                    lineaSin+=check.esID(s);
                     //this.getAnalisisLex(this.esID(s));
-                } else if (this.esNum(s) != null) {
-                    lineaSin+=this.esNum(s);
+                } else if (check.esNum(s) != null) {
+                    lineaSin+=check.esNum(s);
                     //this.getAnalisisLex(this.esNum(s));
-                } else if (this.esSimb(s) != null) {
-                    lineaSin+=this.esSimb(s);
+                } else if (check.esSimb(s) != null) {
+                    lineaSin+=check.esSimb(s);
                     //this.getAnalisisLex(this.esSimb(s));
                 }
             }
-            //System.out.println(lineaSin);
+            System.out.println(lineaSin);
             this.getAnalisisSin(lineaSin, i+1);
         }
+        System.out.println("Analisis terminado");
     }
 
     public void getAnalisisSin(String line, int nLine){
-        Arrays table= new Arrays();
+        Diccionarios table= new Diccionarios();
         ArrayList<String> rules = table.getTableRules();
         boolean valido = false;
         for (String r:rules) {
@@ -149,6 +101,9 @@ public class Funciones {
         }
     }
 
+
+
+    /*
     //metodo con el arraylist del analisis lexico, cambiar atributo para retornar el arraylist
     public void getAnalisisLex(String lexTok){
         ArrayList<String> analisis = new ArrayList();
@@ -160,6 +115,6 @@ public class Funciones {
         for(String s : analisis){
             System.out.print(s+" ");
         }
-    }
+    }*/
 
 }
