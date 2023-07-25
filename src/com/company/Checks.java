@@ -47,8 +47,10 @@ public class Checks {
     public String esSimb(String word){
         Diccionarios table = new Diccionarios();
         ArrayList<String> simbArray = table.getTableSimb();
+        String[] SimbDesc;
+
         for (String s : simbArray) {
-            String[] SimbDesc = s.split(" ");
+            SimbDesc = s.split(" ");
             if (word.equals(SimbDesc[0])){
                 return  SimbDesc[1]+" ";
             }
@@ -56,4 +58,14 @@ public class Checks {
         return null;
     }
 
+    public String scope(int scope){
+        if(scope==0){
+            return "";
+        }else if(scope>0){
+            return "ERROR: '}' expected";
+        }else if(scope<0){
+            return "ERROR: '{' expected";
+        }
+        return "";
+    }
 }

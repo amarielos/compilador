@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.ArrayList;
 
 public class Diccionarios {
@@ -29,6 +28,8 @@ public class Diccionarios {
         simbArray.add(", sep");
         simbArray.add("( parAbierto");
         simbArray.add(") parCerrado");
+        simbArray.add("{ llaveAbierta");
+        simbArray.add("} llaveCerrada");
         simbArray.add("| or");
         return simbArray;
     }

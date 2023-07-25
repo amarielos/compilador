@@ -48,7 +48,7 @@ public class Ventana extends JFrame{
             System.out.println("\n");
             Funciones x =new Funciones();
             try {
-                x.getLexemas(srcCode());
+                x.analisis(srcCode());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
