@@ -97,17 +97,21 @@ public class Funciones {
 
     public void setValor(String id, ArrayList<Id> arrayId,String tipo_valor, int valorInt, double valorDouble){
         Id obj = buscarId(arrayId, id);
-        if(obj!=null){
-            if(check.compatibilidad(obj.tipo_id,tipo_valor)) {
+        int op=check.compatibilidad(obj.tipo_id,tipo_valor);
+            if(op==1) {
                 if (tipo_valor.equals("int")) {
                     obj.setValorInt(valorInt, tipo_valor);
                 } else if (tipo_valor.equals("double")) {
                     obj.setValorDouble(valorDouble, tipo_valor);
                 }
-            }else{
+            }else if(op!=0){
+                valorInt= (int) valorDouble;
+                tipo_valor="int";
+                obj.setValorInt(valorInt, tipo_valor);
+            }
+            else{
                 System.out.println("Error: "+obj.tipo_id+" no es compatible con "+tipo_valor);
             }
-        }
     }
 
     //metodo con validaciones para obtener los tokens, añade lexema y token a un arraylist
@@ -115,7 +119,8 @@ public class Funciones {
 
         //variables para el objeto id
         int scope = 0, valorInt;
-        String id, tipo_id, tipo_valor;
+        String id, tipo_id, tipo_valor, id2=null;
+        Id ID2;
         double valorDouble;
         //Arraylist de objetos id
         ArrayList<Id> arrayId = new ArrayList<>();
@@ -156,8 +161,12 @@ public class Funciones {
                 } else if (s.equals("carac")) {
                     lineaSin += "carac ";
                 } else if (check.esID(s) != null) {
+                    if(id!=null){
+                        id2=s;
+                    }else{
                         id = s;
-                        lineaSin += check.esID(s);
+                    }
+                    lineaSin += check.esID(s);
                 } else if (check.esNum(s) != null) {
                     lineaSin += check.esNum(s);
                     if(check.esInt(s)){
@@ -184,6 +193,12 @@ public class Funciones {
                 if(op==0){
                     Id objId = new Id(id, tipo_id, scope);
                     arrayId.add(objId);
+                    if(id2!=null){
+                        ID2=buscarId(arrayId,id2);
+                        tipo_valor=ID2.tipo_valor;
+                        valorDouble=ID2.valorDouble;
+                        valorInt=ID2.valorInt;
+                    }
                     if(tipo_valor!=null){
                         this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble);
                     }

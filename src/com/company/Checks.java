@@ -71,13 +71,17 @@ public class Checks {
         }
     }
 
-    public boolean compatibilidad(String valor1, String valor2){
+    public int compatibilidad(String valor1, String valor2){
         if(valor1.equals("int") && valor2.equals("int")){
-            return true;
+            return 1;
         }else if(valor1.equals("double") && valor2.equals("int")){
-            return true;
-        }else
-            return valor1.equals("double") && valor2.equals("double");
+            return 1;
+        }else if(valor1.equals("double") && valor2.equals("double")){
+            return 1;
+        }else if(valor1.equals("int") && valor2.equals("double")){
+            return 2;
+        }
+            return 0;
     }
 
     public void inicializacion(ArrayList<Id> arrayId){
