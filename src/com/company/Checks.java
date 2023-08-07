@@ -43,6 +43,9 @@ public class Checks {
         return null;
     }
 
+    public boolean esInt(String word){
+        return word.matches("^-?[0-9]+?$");
+    }
     //METODO, RECIBE PALABRA Y REGRESA SI ES UN SIMBOLO (1 CARACTER)
     public String esSimb(String word){
         Diccionarios table = new Diccionarios();
@@ -58,14 +61,37 @@ public class Checks {
         return null;
     }
 
-    public String scope(int scope){
+    public void scope(int scope){
         if(scope==0){
-            return "";
+            System.out.println("");
         }else if(scope>0){
-            return "ERROR: '}' expected";
+            System.out.println("ERROR: '}' expected");
         }else if(scope<0){
-            return "ERROR: '{' expected";
+            System.out.println("ERROR: '{' expected");
         }
-        return "";
     }
+
+    public boolean compatibilidad(String valor1, String valor2){
+        if(valor1.equals("int") && valor2.equals("int")){
+            return true;
+        }else if(valor1.equals("double") && valor2.equals("int")){
+            return true;
+        }else
+            return valor1.equals("double") && valor2.equals("double");
+    }
+
+    public void inicializacion(ArrayList<Id> arrayId){
+        Funciones obj = new Funciones();
+        int cont=0;
+        for (Id i:arrayId) {
+            if(i.tipo_valor==null){
+                System.out.println("Warning: variable '"+i.id+"' no ha sido inicializada");
+                cont++;
+            }
+        }
+        if(cont==0) obj.printIDArray(arrayId);
+    }
+
+
 }
+

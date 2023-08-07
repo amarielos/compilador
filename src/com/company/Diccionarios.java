@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Diccionarios {
     public ArrayList<String> getTableTipoDato(){
-        ArrayList<String> tdArray = new ArrayList();
+        ArrayList<String> tdArray = new ArrayList<>();
         tdArray.add("int");
         tdArray.add("double");
         tdArray.add("String");
@@ -12,13 +12,13 @@ public class Diccionarios {
         return tdArray;
     }
     public ArrayList<String> getTableRW(){
-        ArrayList<String> rwArray = new ArrayList();
+        ArrayList<String> rwArray = new ArrayList<>();
         rwArray.add("if");
 
         return rwArray;
     }
     public ArrayList<String> getTableSimb(){
-        ArrayList<String> simbArray =new ArrayList();
+        ArrayList<String> simbArray =new ArrayList<>();
         simbArray.add("+ suma");
         simbArray.add("- dif");
         simbArray.add("* multi");
@@ -34,7 +34,7 @@ public class Diccionarios {
         return simbArray;
     }
     public ArrayList<String> getTableRules(){
-        ArrayList<String> rulesArray = new ArrayList();
+        ArrayList<String> rulesArray = new ArrayList<>();
         rulesArray.add("");
         rulesArray.add(" ");
         rulesArray.add("\n");

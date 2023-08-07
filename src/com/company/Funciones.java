@@ -45,10 +45,17 @@ public class Funciones {
             System.out.println("id: "+i.id);
             System.out.println("tipo id: "+i.tipo_id);
             System.out.println("scope: "+i.scope);
+            System.out.println("tipo valor: "+i.tipo_valor);
+            if(i.tipo_valor.equals("int")){
+                System.out.println("valor: "+i.valorInt);
+            }else if(i.tipo_valor.equals("double")){
+                System.out.println("valor: "+i.valorDouble);
+            }
             System.out.println("\n");
         }
     }
 
+    //inicio entrega 1 ---------------------------------------------------------------------------------------------------
     public Id buscarId(ArrayList<Id> arrayID, String _id){
         for (Id i:arrayID) {
             if(i.id.equals(_id)){
@@ -68,10 +75,13 @@ public class Funciones {
         return arrayID;
     }
 
-    public int crearObjeto(ArrayList<Id> arrayId, String id, String tipo_id){
+    public int crearObjeto(ArrayList<Id> arrayId, String id, String tipo_id, int scope){
             if(tipo_id!=null){
                 if(buscarId(arrayId,id)!=null){
-                    return 1;
+                    if (buscarId(arrayId,id).scope!=scope){
+                        return 0;
+                    }else{
+                    return 1;}
                 }else{
                     return 0;
                 }
@@ -83,17 +93,32 @@ public class Funciones {
                 }
             }
     }
+    //fin entrega 1 ---------------------------------------------------------------------------------------------------
+
+    public void setValor(String id, ArrayList<Id> arrayId,String tipo_valor, int valorInt, double valorDouble){
+        Id obj = buscarId(arrayId, id);
+        if(obj!=null){
+            if(check.compatibilidad(obj.tipo_id,tipo_valor)) {
+                if (tipo_valor.equals("int")) {
+                    obj.setValorInt(valorInt, tipo_valor);
+                } else if (tipo_valor.equals("double")) {
+                    obj.setValorDouble(valorDouble, tipo_valor);
+                }
+            }else{
+                System.out.println("Error: "+obj.tipo_id+" no es compatible con "+tipo_valor);
+            }
+        }
+    }
 
     //metodo con validaciones para obtener los tokens, añade lexema y token a un arraylist
-    public void analisis(String srcCode) throws IOException {
+    public void secretaria(String srcCode) throws IOException {
 
         //variables para el objeto id
-        int scope = 0;
-        String id, tipo_id;
+        int scope = 0, valorInt;
+        String id, tipo_id, tipo_valor;
+        double valorDouble;
         //Arraylist de objetos id
-        ArrayList<Id> arrayId = new ArrayList();
-
-
+        ArrayList<Id> arrayId = new ArrayList<>();
         String codeWOcomment, lineaSin, line;
         String[] Code_lines, lineArray;
 
@@ -105,6 +130,9 @@ public class Funciones {
             //reincio de valores con cada linea
             id = null;
             tipo_id = null;
+            tipo_valor=null;
+            valorDouble=0.0;
+            valorInt=0;
 
             //System.out.println("\nLínea "+(i+1));
             lineaSin = "";
@@ -121,20 +149,24 @@ public class Funciones {
                 if (check.esTD(s) != null) {
                     tipo_id = s;
                     lineaSin += check.esTD(s);
-
                 } else if (check.esRW(s) != null) {
                     lineaSin += check.esRW(s);
-
                 } else if (s.equals("cad")) {
                     lineaSin += "cad ";
                 } else if (s.equals("carac")) {
-
                     lineaSin += "carac ";
                 } else if (check.esID(s) != null) {
-                    id = s;
-                    lineaSin += check.esID(s);
+                        id = s;
+                        lineaSin += check.esID(s);
                 } else if (check.esNum(s) != null) {
                     lineaSin += check.esNum(s);
+                    if(check.esInt(s)){
+                        valorInt= Integer.parseInt(s);
+                        tipo_valor="int";
+                    }else{
+                        valorDouble = Double.parseDouble(s);
+                        tipo_valor="double";
+                    }
                 } else if (check.esSimb(s) != null) {
                     if (check.esSimb(s).equals("llaveAbierta ")) {
                         scope++;
@@ -144,30 +176,36 @@ public class Funciones {
                     } else {
                         lineaSin += check.esSimb(s);
                     }
-
                 }
             }
+            //validar creacion o modificacion de id
             if (id != null) {
-                int op = crearObjeto(arrayId, id,tipo_id);
+                int op = crearObjeto(arrayId, id,tipo_id, scope);
                 if(op==0){
                     Id objId = new Id(id, tipo_id, scope);
                     arrayId.add(objId);
+                    if(tipo_valor!=null){
+                        this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble);
+                    }
                 }else if(op==1){
                     System.out.println("Error "+ "en linea "+(i+1)+": variable ya ha sido definida");
                 }else if(op==2){
-                    System.out.print("");
+                    if(tipo_valor!=null){
+                        this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble);
+                    }
                 }else if(op==3){
                     System.out.println("Error "+"en linea "+(i+1)+": variable no ha sido definida");
                 }
             }
             //System.out.println(lineaSin);
-            //this.getAnalisisSin(lineaSin, i + 1);
+            this.getAnalisisSin(lineaSin, i + 1);
         }
 
-        //printIDArray(arrayId);
-        System.out.println(check.scope(scope));
+        check.scope(scope);
+        check.inicializacion(arrayId);
         System.out.println("Analisis terminado");
     }
+
 
     public void getAnalisisSin(String line, int nLine) {
         Diccionarios table = new Diccionarios();
@@ -183,6 +221,4 @@ public class Funciones {
             System.out.println("error sintáctico, Línea " + nLine);
         }
     }
-
-
 }
