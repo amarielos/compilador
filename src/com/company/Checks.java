@@ -43,9 +43,11 @@ public class Checks {
         return null;
     }
 
+    //verifica si un num es int
     public boolean esInt(String word){
         return word.matches("^-?[0-9]+?$");
     }
+
     //METODO, RECIBE PALABRA Y REGRESA SI ES UN SIMBOLO (1 CARACTER)
     public String esSimb(String word){
         Diccionarios table = new Diccionarios();
@@ -61,21 +63,23 @@ public class Checks {
         return null;
     }
 
+    //verifica error de missing brace
     public void scope(int scope){
         if(scope==0){
             System.out.println("");
         }else if(scope>0){
             System.out.println("ERROR: '}' expected");
-        }else if(scope<0){
+        }else{
             System.out.println("ERROR: '{' expected");
         }
     }
 
+    //verifica error de compatibilidad
     public int compatibilidad(String valor1, String valor2){
         if(valor1.equals("int") && valor2.equals("int")){
             return 1;
         }else if(valor1.equals("double") && valor2.equals("int")){
-            return 1;
+            return 3;
         }else if(valor1.equals("double") && valor2.equals("double")){
             return 1;
         }else if(valor1.equals("int") && valor2.equals("double")){
@@ -84,6 +88,7 @@ public class Checks {
             return 0;
     }
 
+    //verifica error de inicializacion
     public void inicializacion(ArrayList<Id> arrayId){
         Funciones obj = new Funciones();
         int cont=0;

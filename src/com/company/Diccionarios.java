@@ -11,12 +11,14 @@ public class Diccionarios {
         tdArray.add("float");
         return tdArray;
     }
+
     public ArrayList<String> getTableRW(){
         ArrayList<String> rwArray = new ArrayList<>();
         rwArray.add("if");
 
         return rwArray;
     }
+
     public ArrayList<String> getTableSimb(){
         ArrayList<String> simbArray =new ArrayList<>();
         simbArray.add("+ suma");
@@ -33,6 +35,7 @@ public class Diccionarios {
         simbArray.add("| or");
         return simbArray;
     }
+
     public ArrayList<String> getTableRules(){
         ArrayList<String> rulesArray = new ArrayList<>();
         rulesArray.add("");
@@ -90,6 +93,11 @@ public class Diccionarios {
     //if(id==id) | if(id==num)
         rulesArray.add("RW parAbierto ID asig asig ID parCerrado or RW parAbierto ID asig asig ID parCerrado ");
 
+//Compiladores 2: parcial 1
+    //int s = d;
+        rulesArray.add("TipoDato ID asig ID fin ");
+    //s = d;
+        rulesArray.add("ID asig ID fin ");
         return rulesArray;
     }
 }

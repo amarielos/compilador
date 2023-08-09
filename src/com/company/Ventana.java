@@ -65,4 +65,5 @@ public class Ventana extends JFrame{
         ActionListener accion = e -> srcCode.setText(null);
         boton2.addActionListener(accion);
     }
+
 }
