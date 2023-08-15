@@ -1,10 +1,9 @@
 package com.company;
-
 import java.util.ArrayList;
 
-public class Arrays {
+public class Diccionarios {
     public ArrayList<String> getTableTipoDato(){
-        ArrayList<String> tdArray = new ArrayList();
+        ArrayList<String> tdArray = new ArrayList<>();
         tdArray.add("int");
         tdArray.add("double");
         tdArray.add("String");
@@ -12,14 +11,16 @@ public class Arrays {
         tdArray.add("float");
         return tdArray;
     }
+
     public ArrayList<String> getTableRW(){
-        ArrayList<String> rwArray = new ArrayList();
+        ArrayList<String> rwArray = new ArrayList<>();
         rwArray.add("if");
 
         return rwArray;
     }
+
     public ArrayList<String> getTableSimb(){
-        ArrayList<String> simbArray =new ArrayList();
+        ArrayList<String> simbArray =new ArrayList<>();
         simbArray.add("+ suma");
         simbArray.add("- dif");
         simbArray.add("* multi");
@@ -29,11 +30,14 @@ public class Arrays {
         simbArray.add(", sep");
         simbArray.add("( parAbierto");
         simbArray.add(") parCerrado");
+        simbArray.add("{ llaveAbierta");
+        simbArray.add("} llaveCerrada");
         simbArray.add("| or");
         return simbArray;
     }
+
     public ArrayList<String> getTableRules(){
-        ArrayList<String> rulesArray = new ArrayList();
+        ArrayList<String> rulesArray = new ArrayList<>();
         rulesArray.add("");
         rulesArray.add(" ");
         rulesArray.add("\n");
@@ -89,6 +93,11 @@ public class Arrays {
     //if(id==id) | if(id==num)
         rulesArray.add("RW parAbierto ID asig asig ID parCerrado or RW parAbierto ID asig asig ID parCerrado ");
 
+//Compiladores 2: parcial 1
+    //int s = d;
+        rulesArray.add("TipoDato ID asig ID fin ");
+    //s = d;
+        rulesArray.add("ID asig ID fin ");
         return rulesArray;
     }
 }
