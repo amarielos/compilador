@@ -1,6 +1,7 @@
 package com.company;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Funciones {
@@ -19,23 +20,33 @@ public class Funciones {
         }
         return complete;
     }
+    public String toChar(String valor){
+        String caracter = String.valueOf(valor.split("'")[1].charAt(0));
+        return caracter;
+    }
 
     //extrae cadenas
-    public String CatchString(String line) {
-        String[] lineWOcadena = line.split("(\")[,.¿?¡!;:A-Za-z0-9\\s]*(\")");
-        if (lineWOcadena.length > 1) {
-            line = lineWOcadena[0] + "cad" + lineWOcadena[1];
-            return line;
+    public String[] CatchString(String line) {
+        String valor;
+        String[] lineWOcadena = line.split(String.format(WITH_DELIMITER,"(\")[,.¿?¡!;:A-Za-z0-9\\s]*(\")"));
+        if (lineWOcadena.length > 2) {
+            line = lineWOcadena[0] + "cad" + lineWOcadena[2];
+            valor=lineWOcadena[1];
+            String[] arrayValores= {line, valor};
+            return arrayValores;
         }
         return null;
     }
 
     //extrae los caracteres
-    public String CatchChar(String line) {
-        String[] lineWOcadena = line.split("(')[,.¿?¡!;:A-Za-z0-9\\s]?(')");
-        if (lineWOcadena.length > 1) {
-            line = lineWOcadena[0] + "carac" + lineWOcadena[1];
-            return line;
+    public String[] CatchChar(String line) {
+        String valor;
+        String[] lineWOcadena = line.split(String.format(WITH_DELIMITER,"(')[,.¿?¡!;:A-Za-z0-9\\s]+(')"));
+        if(lineWOcadena.length>2){
+            line = lineWOcadena[0]+"carac"+lineWOcadena[2];
+            valor = "'"+this.toChar(lineWOcadena[1])+"'";
+            String[] arrayValores = {line, valor};
+            return arrayValores;
         }
         return null;
     }
@@ -47,10 +58,11 @@ public class Funciones {
             System.out.println("tipo id: "+i.tipo_id);
             System.out.println("scope: "+i.scope);
             System.out.println("tipo valor: "+i.tipo_valor);
-            if(i.tipo_valor.equals("int")){
-                System.out.println("valor: "+i.valorInt);
-            }else if(i.tipo_valor.equals("double")){
-                System.out.println("valor: "+i.valorDouble);
+            switch (i.tipo_valor) {
+                case "int" -> System.out.println("valor: " + i.valorInt);
+                case "double" -> System.out.println("valor: " + i.valorDouble);
+                case "char" -> System.out.println("valor: " + i.valorChar);
+                case "String" -> System.out.println("valor: " + i.valorString);
             }
             System.out.println("\n");
         }
@@ -100,14 +112,17 @@ public class Funciones {
     //fin entrega 1 ---------------------------------------------------------------------------------------------------
 
     //setea el valor al id, llama a compatibilidad y conversion implicita
-    public void setValor(String id, ArrayList<Id> arrayId,String tipo_valor, int valorInt, double valorDouble){
+    public void setValor(String id, ArrayList<Id> arrayId,String tipo_valor, int valorInt, double valorDouble, String valorChar, String valorString){
         Id obj = buscarId(arrayId, id);
         int op=check.compatibilidad(obj.tipo_id,tipo_valor);
-            if(op==1) {
-                if (tipo_valor.equals("int")) {
-                    obj.setValorInt(valorInt, tipo_valor);
-                } else if (tipo_valor.equals("double")) {
-                    obj.setValorDouble(valorDouble, tipo_valor);
+            if(op==0){
+                System.out.println("Error: "+obj.tipo_id+" no es compatible con "+tipo_valor);
+            }else if(op==1){
+                switch (tipo_valor) {
+                    case "int" -> obj.setValorInt(valorInt, tipo_valor);
+                    case "double" -> obj.setValorDouble(valorDouble, tipo_valor);
+                    case "char" -> obj.setValorChar(valorChar, tipo_valor);
+                    case "String" -> obj.setValorString(valorString,tipo_valor);
                 }
             }else if(op==2){
                 valorInt= (int) valorDouble;
@@ -117,9 +132,19 @@ public class Funciones {
                 valorDouble= valorInt;
                 tipo_valor="double";
                 obj.setValorDouble(valorDouble, tipo_valor);
-            }
-            else{
-                System.out.println("Error: "+obj.tipo_id+" no es compatible con "+tipo_valor);
+            }else if (op == 4){
+                if (tipo_valor.equals("int")){
+                    valorChar = "'"+(char)valorInt+"'";
+                }else{
+                    valorInt= (int)valorDouble;
+                    valorChar="'"+(char)valorInt+"'";
+                }
+                tipo_valor = "char";
+                obj.setValorChar(valorChar,tipo_valor);
+            }else if(op==5){
+                valorString="\""+this.toChar(valorChar)+"\"";
+                tipo_valor="String";
+                obj.setValorString(valorString, tipo_valor);
             }
     }
 
@@ -127,10 +152,12 @@ public class Funciones {
     public void secretaria(String srcCode) throws IOException {
     //VARIABLES
         //variables para el objeto id
+        String[] esChar,esString;
         int scope = 0, valorInt;
-        String id, tipo_id, tipo_valor, id2;
+        String id, tipo_id, tipo_valor, id2, valorString;
         Id ID2;
         double valorDouble;
+        String valorchar;
         //Arraylist de objetos id
         ArrayList<Id> arrayId = new ArrayList<>();
         String codeWOcomment, lineaSin, line;
@@ -149,16 +176,24 @@ public class Funciones {
             tipo_valor=null;
             valorDouble=0.0;
             valorInt=0;
+            valorchar=null;
+            valorString=null;
 
             //System.out.println("\nLínea "+(i+1));
             lineaSin = "";
             line = Code_lines[i];
 
-            if (this.CatchString(line) != null) {
-                line = this.CatchString(line);
-            } else if (this.CatchChar(line) != null) {
-                line = this.CatchChar(line);
+            esChar= this.CatchChar(line);
+            esString=this.CatchString(line);
+
+            if (esString != null) {
+                line = esString[0];
+                valorString=esString[1];
+            } else if (esChar != null) {
+                line = esChar[0];
+                valorchar=esChar[1];
             }
+
 
             lineArray = line.split(String.format(WITH_DELIMITER, "[|{} (),\t\s;=+*/-]"));
 
@@ -171,8 +206,10 @@ public class Funciones {
                     lineaSin += check.esRW(s);
                 } else if (s.equals("cad")) {
                     lineaSin += "cad ";
+                    tipo_valor="String";
                 } else if (s.equals("carac")) {
                     lineaSin += "carac ";
+                    tipo_valor="char";
                 } else if (check.esID(s) != null) {
                     if(id!=null){
                         id2=s;
@@ -214,12 +251,14 @@ public class Funciones {
                             tipo_valor = ID2.tipo_valor;
                             valorDouble = ID2.valorDouble;
                             valorInt = ID2.valorInt;
+                            valorchar = ID2.valorChar;
+                            valorString = ID2.valorString;
                         }else{
                             System.out.println("Error: Variable '"+id2+"' no existe");
                         }
                     }
                     if(tipo_valor!=null){
-                        this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble);
+                        this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble, valorchar, valorString);
                     }
                 }else if(op==1){
                     System.out.println("Error "+ "en linea "+(i+1)+": variable ya ha sido definida");
@@ -230,12 +269,14 @@ public class Funciones {
                             tipo_valor = ID2.tipo_valor;
                             valorDouble = ID2.valorDouble;
                             valorInt = ID2.valorInt;
+                            valorchar = ID2.valorChar;
+                            valorString = ID2.valorString;
                         }else{
                             System.out.println("Error: Variable '"+id2+"' no existe");
                         }
                     }
                     if(tipo_valor!=null){
-                        this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble);
+                        this.setValor(id, arrayId, tipo_valor, valorInt, valorDouble, valorchar, valorString);
                     }
                 }else if(op==3){
                     System.out.println("Error "+"en linea "+(i+1)+": variable no ha sido definida");

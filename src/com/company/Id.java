@@ -1,7 +1,7 @@
 package com.company;
 
 public class Id {
-    String id, tipo_id, tipo_valor;
+    String id, tipo_id, tipo_valor, valorChar, valorString;
     int scope, valorInt;
     double valorDouble;
 
@@ -18,6 +18,14 @@ public class Id {
 
     public void setValorDouble(double _valor,String _tipo_valor){
         this.valorDouble=_valor;
+        this.tipo_valor=_tipo_valor;
+    }
+    public void setValorChar(String _valor,String _tipo_valor){
+        this.valorChar=_valor;
+        this.tipo_valor=_tipo_valor;
+    }
+    public void setValorString(String _valor,String _tipo_valor){
+        this.valorString=_valor;
         this.tipo_valor=_tipo_valor;
     }
 

@@ -84,6 +84,16 @@ public class Checks {
             return 1;
         }else if(valor1.equals("int") && valor2.equals("double")){
             return 2;
+        }else if(valor1.equals("char") && valor2.equals("char")){
+            return 1;
+        }else if(valor1.equals("char") && valor2.equals("int")){
+            return 4;
+        }else if(valor1.equals("char") && valor2.equals("double")){
+            return 4;
+        }else if(valor1.equals("String") && valor2.equals("String")){
+            return 1;
+        }else if(valor1.equals("String") && valor2.equals("char")){
+            return 5;
         }
             return 0;
     }
