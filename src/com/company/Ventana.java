@@ -48,7 +48,7 @@ public class Ventana extends JFrame{
             System.out.println("\n");
             Funciones x =new Funciones();
             try {
-                x.secretaria(srcCode());
+                x.getLexemas(srcCode());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -65,5 +65,4 @@ public class Ventana extends JFrame{
         ActionListener accion = e -> srcCode.setText(null);
         boton2.addActionListener(accion);
     }
-
 }
